@@ -2,7 +2,7 @@
     'use strict';
 
     // Lexicon data
-    const lexicon = require('./data/lexicon.json');
+    const lexicon = require('../lexicons/lexicon.json');
 
     // External modules
     const async = require('async');
