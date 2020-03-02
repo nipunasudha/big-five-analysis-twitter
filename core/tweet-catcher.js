@@ -1,6 +1,8 @@
 (function () {
     const Twitter = require('twitter-js-client').Twitter;
     const fs = require('fs');
+    const demoji = require('demoji');
+    const emojies = require('../lexicons/emojies.json');
 
 
 //Get this data from your twitter apps dashboard
@@ -16,6 +18,14 @@
 
     function onError(error) {
         return console.log("ERROR: " + error);
+    }
+
+    function preprocess_tweet(raw_tweet) {
+        for (let emoji in emojies) {
+            const re = new RegExp(emoji, "g");
+            raw_tweet = raw_tweet.replace(re, emojies[emoji])
+        }
+        return raw_tweet
     }
 
     const tweetCatcher = (config, callback) => {
@@ -34,7 +44,8 @@
                 const tweets = [];
                 const tweets_full = JSON.parse(data);
                 tweets_full.forEach((tweet) => {
-                    tweets.push(tweet['text']);
+                    let raw_tweet = tweet['text'];
+                    tweets.push(preprocess_tweet(raw_tweet));
                 });
 
                 if (!fs.existsSync(dir_path)) {

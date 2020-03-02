@@ -12,8 +12,8 @@ const opts = {   // These are the default options
     'wcGrams': 'false',
 };
 
-//example cached offline users: BebeRexha, realDonaldTrump, AnneMarie
-const username = 'AnneMarie';
+//example cached offline users: BebeRexha, katyperry, AnneMarie
+const username = 'katyperry';
 const args = {
     screen_name: username,
     count: 200, //max is 200 for a single request
