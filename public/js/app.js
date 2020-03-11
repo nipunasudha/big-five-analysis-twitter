@@ -26,6 +26,7 @@ $(function () {
         $.getJSON(`/api/getbigfive?username=${username}`, function (data) {
             console.log(data);
             switchMode(EnumMode.ResultsMode);
+            setResults(data);
         });
     });
     // on reset
@@ -53,5 +54,18 @@ $(function () {
                 $resultsSection.show();
                 break;
         }
+    }
+
+    function setResults(results) {
+        const $rA = $('#rA');
+        const $rC = $('#rC');
+        const $rE = $('#rE');
+        const $rN = $('#rN');
+        const $rO = $('#rO');
+        $rA.text(results['A']);
+        $rC.text(results['C']);
+        $rE.text(results['E']);
+        $rN.text(results['N']);
+        $rO.text(results['O']);
     }
 });

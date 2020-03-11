@@ -1,36 +1,16 @@
-const bigfive = require('./core/bigfive');
-const opts = {   // These are the default options
-    'encoding': 'binary',
-    'locale': 'US',
-    'logs': 3,
-    'max': Number.POSITIVE_INFINITY,
-    'min': Number.NEGATIVE_INFINITY,
-    'nGrams': [2, 3],
-    'output': 'lex',
-    'places': 9,
-    'sortBy': 'lex',
-    'wcGrams': 'false',
-};
+(function () {
+    const express = require("express");
+    const helper = require("./helper");
+    const app = express();
 
-//example cached offline users: BebeRexha, katyperry, AnneMarie
-const username = 'katyperry';
-const args = {
-    screen_name: username,
-    count: 200, //max is 200 for a single request
-    include_rts: 1
-};
-const tweetCatcher = require('./core/tweet-catcher');
-tweetCatcher(args, onTweetsLoad);
+    app.use(express.static('public'));
+    app.get('/api/getbigfive', async (req, res) => {
+        const results = await helper.get_bigfive(req.query.username);
+        return res.send(JSON.stringify(results));
+    });
 
-function onTweetsLoad(tweets) {
-    const all_tweets_string = tweets.join(' ');
-    const personality = bigfive(all_tweets_string, opts);
-    console.log(`\n===== Analysis results for "${username}" (${tweets.length} tweets) =====`);
-    console.log(`Big Five Personality Traits:\n`);
-    console.log(`Openness: ${personality['O']}`);
-    console.log(`Conscientiousness: ${personality['C']}`);
-    console.log(`Extraversion: ${personality['E']}`);
-    console.log(`Agreeableness: ${personality['A']}`);
-    console.log(`Neuroticism: ${personality['N']}`);
-}
+    app.listen(8888, () =>
+        console.log(`App is served at http://localhost:8888`),
+    );
 
+})();
