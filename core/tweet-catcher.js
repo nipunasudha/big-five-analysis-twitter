@@ -28,36 +28,35 @@
         return raw_tweet
     }
 
-    const tweetCatcher = (config, callback) => {
+    const tweetCatcher = async (config) => {
         const dir_path = './tweets';
         const file_name = `${config['screen_name']}_tweets.json`;
         const full_path = `${dir_path}/${file_name}`;
         // check if tweets are already cached
         if (fs.existsSync(full_path)) {
             console.log(`${file_name} is already cached. Using the existing version.`);
-            const tweets = JSON.parse(fs.readFileSync(full_path, 'utf8'));
-            callback(tweets);
-            return;
+            return JSON.parse(fs.readFileSync(full_path, 'utf8'));
         }
 
-        twit.getUserTimeline(config, onError, (data) => {
-                const tweets = [];
-                const tweets_full = JSON.parse(data);
-                tweets_full.forEach((tweet) => {
-                    let raw_tweet = tweet['text'];
-                    tweets.push(preprocess_tweet(raw_tweet));
-                });
+        return new Promise(function (resolve, reject) {
+            twit.getUserTimeline(config, reject, (data) => {
+                    const tweets = [];
+                    const tweets_full = JSON.parse(data);
+                    tweets_full.forEach((tweet) => {
+                        let raw_tweet = tweet['text'];
+                        tweets.push(preprocess_tweet(raw_tweet));
+                    });
 
-                if (!fs.existsSync(dir_path)) {
-                    fs.mkdirSync(dir_path);
+                    if (!fs.existsSync(dir_path)) {
+                        fs.mkdirSync(dir_path);
+                    }
+                    fs.writeFile(full_path, JSON.stringify(tweets),
+                        'utf8',
+                        () => console.log('\nTweets cached for future use.'));
+                    resolve(tweets);
                 }
-                fs.writeFile(full_path, JSON.stringify(tweets),
-                    'utf8',
-                    () => console.log('\nTweets cached for future use.'));
-                callback(tweets);
-            }
-        );
-
+            );
+        });
     };
 
     if (typeof exports !== 'undefined') {
