@@ -62,10 +62,10 @@ $(function () {
         const $rE = $('#rE');
         const $rN = $('#rN');
         const $rO = $('#rO');
-        $rA.text(results['A']);
-        $rC.text(results['C']);
-        $rE.text(results['E']);
-        $rN.text(results['N']);
-        $rO.text(results['O']);
+        $rA.text(`${results['A'].toFixed(4) * 100}%`);
+        $rC.text(`${results['C'].toFixed(4) * 100}%`);
+        $rE.text(`${results['E'].toFixed(4) * 100}%`);
+        $rN.text(`${results['N'].toFixed(4) * 100}%`);
+        $rO.text(`${results['O'].toFixed(4) * 100}%`);
     }
 });
