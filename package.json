@@ -4,7 +4,7 @@
   "description": "Calculate big five personality traits from tweets of a user",
   "main": "index.js",
   "dependencies": {
-    "async": "^2.6.0",
+    "async": "^2.6.4",
     "british_american_translate": "^1.0.1",
     "demoji": "^1.0.0",
     "express": "^4.17.1",
